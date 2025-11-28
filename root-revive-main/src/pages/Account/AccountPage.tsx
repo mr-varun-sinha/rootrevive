@@ -151,90 +151,65 @@ const AccountPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <div className="flex-1 py-12">
+      <div className="flex-1 py-12 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 animate-fade-in">
             <div>
-              <h1 className="text-3xl font-serif">My Account</h1>
+              <h1 className="text-3xl font-bold tracking-tight">My Account</h1>
               {user && (
-                <p className="text-gray-600">Welcome back, {profile?.first_name || user.email}</p>
+                <p className="text-muted-foreground">Welcome back, {profile?.first_name || user.email}</p>
               )}
             </div>
             <Button
               variant="outline"
               onClick={handleLogout}
-              className="mt-4 md:mt-0"
+              className="mt-4 md:mt-0 border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive"
             >
               Sign Out
             </Button>
           </div>
 
-          <Card className="border border-border shadow-none rounded-none">
-            <CardContent className="p-0">
-              <Tabs
-                defaultValue="overview"
-                value={activeTab}
-                onValueChange={(value) => {
-                  setActiveTab(value);
-                  // Update URL without reloading the page
-                  navigate(`/account?tab=${value}`, { replace: true });
-                }}
-                className="w-full"
-              >
-                <div className="border-b border-border">
-                  <div className="pl-6">
-                    <TabsList className="h-auto p-0 bg-transparent">
-                      <TabsTrigger
-                        value="overview"
-                        className="py-3 px-4 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent font-medium uppercase tracking-wide text-sm"
-                      >
-                        Overview
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="orders"
-                        className="py-3 px-4 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent font-medium uppercase tracking-wide text-sm"
-                      >
-                        Orders
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="addresses"
-                        className="py-3 px-4 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent font-medium uppercase tracking-wide text-sm"
-                      >
-                        Addresses
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="settings"
-                        className="py-3 px-4 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent font-medium uppercase tracking-wide text-sm"
-                      >
-                        Settings
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Sidebar Navigation */}
+            <div className="md:col-span-1 space-y-2 animate-fade-in [animation-delay:100ms]">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-2 shadow-sm">
+                {[
+                  { id: 'overview', label: 'Overview', icon: '📊' },
+                  { id: 'orders', label: 'Orders', icon: '📦' },
+                  { id: 'addresses', label: 'Addresses', icon: '📍' },
+                  { id: 'settings', label: 'Settings', icon: '⚙️' },
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      navigate(`/account?tab=${item.id}`, { replace: true });
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === item.id
+                        ? 'bg-primary text-primary-foreground shadow-md'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}
+                  >
+                    <span>{item.icon}</span>
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                <div className="p-6">
-                  <TabsContent value="overview" className="mt-0 p-0">
-                    <AccountOverview user={combinedUserData} />
-                  </TabsContent>
-
-                  <TabsContent value="orders" className="mt-0 p-0">
-                    <OrderHistory />
-                  </TabsContent>
-
-                  <TabsContent value="addresses" className="mt-0 p-0">
-                    <AddressBook />
-                  </TabsContent>
-
-                  <TabsContent value="settings" className="mt-0 p-0">
-                    <AccountSettings user={combinedUserData} />
-                  </TabsContent>
-                </div>
-              </Tabs>
-            </CardContent>
-          </Card>
+            {/* Content Area */}
+            <div className="md:col-span-3 animate-fade-in [animation-delay:200ms]">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6 shadow-sm min-h-[500px]">
+                {activeTab === 'overview' && <AccountOverview user={combinedUserData} />}
+                {activeTab === 'orders' && <OrderHistory />}
+                {activeTab === 'addresses' && <AddressBook />}
+                {activeTab === 'settings' && <AccountSettings user={combinedUserData} />}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

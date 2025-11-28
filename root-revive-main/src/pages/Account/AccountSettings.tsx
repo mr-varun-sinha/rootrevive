@@ -64,7 +64,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [isUpdatingEmail, setIsUpdatingEmail] = useState(false);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string>(user?.avatar_url || "");
+  const [avatarUrl, setAvatarUrl] = useState<string>((user?.avatar_url as string) || "");
   const { toast } = useToast();
 
   const passwordForm = useForm<PasswordFormValues>({
@@ -228,12 +228,12 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-medium mb-4">Account Settings</h2>
+        <h2 className="text-xl font-bold mb-6">Account Settings</h2>
 
-        <Card className="mb-6">
+        <Card className="mb-6 bg-background/50 backdrop-blur-sm border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="font-medium mb-4">Profile Information</h3>
-            <div className="flex flex-col md:flex-row gap-6 items-start mb-6">
+            <h3 className="font-bold mb-6 text-lg">Profile Information</h3>
+            <div className="flex flex-col md:flex-row gap-8 items-start mb-2">
               <ProfilePicture
                 userId={user?.id}
                 url={avatarUrl}
@@ -242,8 +242,8 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
               />
 
               <Form {...profileForm}>
-                <form onSubmit={profileForm.handleSubmit(handleProfileUpdate)} className="space-y-4 flex-1">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={profileForm.handleSubmit(handleProfileUpdate)} className="space-y-6 flex-1 w-full">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField
                       control={profileForm.control}
                       name="firstName"
@@ -251,7 +251,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                         <FormItem>
                           <FormLabel>First Name</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="bg-background/50" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -265,7 +265,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                         <FormItem>
                           <FormLabel>Last Name</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="bg-background/50" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -280,7 +280,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                       <FormItem>
                         <FormLabel>Phone Number (optional)</FormLabel>
                         <FormControl>
-                          <Input {...field} value={field.value || ""} />
+                          <Input {...field} value={field.value || ""} className="bg-background/50" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -289,7 +289,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
 
                   <Button
                     type="submit"
-                    className="bg-brand-gold text-brand-dark hover:bg-opacity-90"
+                    className="rounded-full px-8"
                     disabled={isUpdatingProfile}
                   >
                     {isUpdatingProfile ? "Updating..." : "Update Profile"}
@@ -300,11 +300,11 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
           </CardContent>
         </Card>
 
-        <Card className="mb-6">
+        <Card className="mb-6 bg-background/50 backdrop-blur-sm border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="font-medium mb-4">Change Email</h3>
+            <h3 className="font-bold mb-6 text-lg">Change Email</h3>
             <Form {...emailForm}>
-              <form onSubmit={emailForm.handleSubmit(handleEmailUpdate)} className="space-y-4">
+              <form onSubmit={emailForm.handleSubmit(handleEmailUpdate)} className="space-y-6 max-w-md">
                 <FormField
                   control={emailForm.control}
                   name="email"
@@ -312,10 +312,10 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                     <FormItem>
                       <FormLabel>Email Address</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} className="bg-background/50" />
                       </FormControl>
                       <FormMessage />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-2">
                         You'll receive a verification email to confirm this change.
                       </p>
                     </FormItem>
@@ -324,7 +324,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
 
                 <Button
                   type="submit"
-                  className="bg-brand-gold text-brand-dark hover:bg-opacity-90"
+                  className="rounded-full px-8"
                   disabled={isUpdatingEmail}
                 >
                   {isUpdatingEmail ? "Updating..." : "Update Email"}
@@ -334,11 +334,11 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
           </CardContent>
         </Card>
 
-        <Card className="mb-6">
+        <Card className="mb-6 bg-background/50 backdrop-blur-sm border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="font-medium mb-4">Change Password</h3>
+            <h3 className="font-bold mb-6 text-lg">Change Password</h3>
             <Form {...passwordForm}>
-              <form onSubmit={passwordForm.handleSubmit(handlePasswordUpdate)} className="space-y-4">
+              <form onSubmit={passwordForm.handleSubmit(handlePasswordUpdate)} className="space-y-6 max-w-md">
                 <FormField
                   control={passwordForm.control}
                   name="currentPassword"
@@ -346,7 +346,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                     <FormItem>
                       <FormLabel>Current Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <Input type="password" {...field} className="bg-background/50" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -360,7 +360,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                     <FormItem>
                       <FormLabel>New Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <Input type="password" {...field} className="bg-background/50" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -374,7 +374,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                     <FormItem>
                       <FormLabel>Confirm New Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <Input type="password" {...field} className="bg-background/50" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -383,7 +383,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
 
                 <Button
                   type="submit"
-                  className="bg-brand-gold text-brand-dark hover:bg-opacity-90"
+                  className="rounded-full px-8"
                   disabled={isUpdatingPassword}
                 >
                   {isUpdatingPassword ? "Updating..." : "Update Password"}
@@ -393,19 +393,19 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background/50 backdrop-blur-sm border-border/50 shadow-sm">
           <CardContent className="p-6">
-            <h3 className="font-medium mb-4">Email Preferences</h3>
+            <h3 className="font-bold mb-6 text-lg">Email Preferences</h3>
             <Form {...notificationForm}>
               <form onSubmit={notificationForm.handleSubmit(handleNotificationUpdate)} className="space-y-4">
                 <FormField
                   control={notificationForm.control}
                   name="orderUpdates"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                    <FormItem className="flex flex-row items-center justify-between rounded-xl border border-border/50 bg-background/50 p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Order Updates</FormLabel>
-                        <p className="text-sm text-gray-500">
+                        <FormLabel className="text-base font-medium">Order Updates</FormLabel>
+                        <p className="text-sm text-muted-foreground">
                           Receive notifications about your orders
                         </p>
                       </div>
@@ -423,10 +423,10 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                   control={notificationForm.control}
                   name="promotions"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                    <FormItem className="flex flex-row items-center justify-between rounded-xl border border-border/50 bg-background/50 p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Promotions & Discounts</FormLabel>
-                        <p className="text-sm text-gray-500">
+                        <FormLabel className="text-base font-medium">Promotions & Discounts</FormLabel>
+                        <p className="text-sm text-muted-foreground">
                           Receive notifications about sales and special offers
                         </p>
                       </div>
@@ -444,10 +444,10 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                   control={notificationForm.control}
                   name="productNews"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                    <FormItem className="flex flex-row items-center justify-between rounded-xl border border-border/50 bg-background/50 p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Product News</FormLabel>
-                        <p className="text-sm text-gray-500">
+                        <FormLabel className="text-base font-medium">Product News</FormLabel>
+                        <p className="text-sm text-muted-foreground">
                           Updates about new products and restocks
                         </p>
                       </div>
@@ -465,10 +465,10 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
                   control={notificationForm.control}
                   name="blogPosts"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                    <FormItem className="flex flex-row items-center justify-between rounded-xl border border-border/50 bg-background/50 p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Hair Care Tips & Blog</FormLabel>
-                        <p className="text-sm text-gray-500">
+                        <FormLabel className="text-base font-medium">Hair Care Tips & Blog</FormLabel>
+                        <p className="text-sm text-muted-foreground">
                           Receive notifications about new blog posts and hair care advice
                         </p>
                       </div>
@@ -484,7 +484,7 @@ const AccountSettings = ({ user }: AccountSettingsProps) => {
 
                 <Button
                   type="submit"
-                  className="bg-brand-gold text-brand-dark hover:bg-opacity-90"
+                  className="rounded-full px-8 mt-4"
                 >
                   Save Preferences
                 </Button>

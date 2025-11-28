@@ -77,9 +77,9 @@ const AccountOverview = ({ user }: AccountOverviewProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-medium mb-4">Account Overview</h2>
+        <h2 className="text-xl font-bold mb-4">Account Overview</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
+          <Card className="bg-background/50 backdrop-blur-sm border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 <ProfilePicture
@@ -90,14 +90,13 @@ const AccountOverview = ({ user }: AccountOverviewProps) => {
                 />
 
                 <div>
-                  <h3 className="font-medium mb-3">Account Details</h3>
-                  <p className="text-gray-600 mb-1">{user?.email}</p>
-                  <div className="mt-4 space-y-2">
-                    <Button variant="link" className="text-brand-gold hover:text-brand-gold/80 p-0 h-auto" asChild>
+                  <h3 className="font-bold mb-1">Account Details</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{user?.email}</p>
+                  <div className="space-y-2 flex flex-col items-start">
+                    <Button variant="link" className="text-primary hover:text-primary/80 p-0 h-auto font-medium" asChild>
                       <Link to="/account?tab=settings">Edit profile</Link>
                     </Button>
-                    <br />
-                    <Button variant="link" className="text-brand-gold hover:text-brand-gold/80 p-0 h-auto" asChild>
+                    <Button variant="link" className="text-primary hover:text-primary/80 p-0 h-auto font-medium" asChild>
                       <Link to="/account?tab=settings">Change password</Link>
                     </Button>
                   </div>
@@ -106,12 +105,12 @@ const AccountOverview = ({ user }: AccountOverviewProps) => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-background/50 backdrop-blur-sm border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
             <CardContent className="p-6">
-              <h3 className="font-medium mb-3">Default Shipping Address</h3>
-              <p className="text-gray-600">No shipping address saved yet.</p>
-              <div className="mt-4">
-                <Button variant="link" className="text-brand-gold hover:text-brand-gold/80 p-0 h-auto" asChild>
+              <h3 className="font-bold mb-3">Default Shipping Address</h3>
+              <p className="text-muted-foreground text-sm mb-4">No shipping address saved yet.</p>
+              <div>
+                <Button variant="link" className="text-primary hover:text-primary/80 p-0 h-auto font-medium" asChild>
                   <Link to="/account?tab=addresses">Add address</Link>
                 </Button>
               </div>
@@ -122,8 +121,8 @@ const AccountOverview = ({ user }: AccountOverviewProps) => {
 
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-medium">Recent Orders</h2>
-          <Button variant="link" className="text-brand-gold hover:text-brand-gold/80 p-0 h-auto" asChild>
+          <h2 className="text-xl font-bold">Recent Orders</h2>
+          <Button variant="link" className="text-primary hover:text-primary/80 p-0 h-auto font-medium" asChild>
             <Link to="/account?tab=orders">View all orders</Link>
           </Button>
         </div>
@@ -131,29 +130,34 @@ const AccountOverview = ({ user }: AccountOverviewProps) => {
         {recentOrders.length > 0 ? (
           <div className="space-y-4">
             {recentOrders.map((order) => (
-              <Card key={order.id}>
+              <Card key={order.id} className="bg-background/50 backdrop-blur-sm border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
                 <CardContent className="p-4">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between">
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-3 md:mb-0">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 flex-1">
                       <div>
-                        <p className="text-sm text-gray-500">Order Number</p>
-                        <p className="font-medium">{order.id}</p>
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Order Number</p>
+                        <p className="font-medium font-mono">{order.id}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Date</p>
-                        <p>{order.date}</p>
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Date</p>
+                        <p className="font-medium">{order.date}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Status</p>
-                        <p>{order.status}</p>
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Status</p>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${order.status === "Delivered" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                          order.status === "Processing" ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400" :
+                            "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                          }`}>
+                          {order.status}
+                        </span>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Total</p>
-                        <p>{order.total}</p>
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Total</p>
+                        <p className="font-medium">{order.total}</p>
                       </div>
                     </div>
-                    <Button variant="link" className="text-brand-gold hover:text-brand-gold/80 p-0 h-auto">
-                      View order
+                    <Button variant="outline" size="sm" className="rounded-full">
+                      View Details
                     </Button>
                   </div>
                 </CardContent>
@@ -161,10 +165,10 @@ const AccountOverview = ({ user }: AccountOverviewProps) => {
             ))}
           </div>
         ) : (
-          <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-gray-600 mb-4">You haven't placed any orders yet.</p>
-              <Button variant="link" className="text-brand-gold hover:text-brand-gold/80" asChild>
+          <Card className="bg-background/50 backdrop-blur-sm border-border/50">
+            <CardContent className="p-8 text-center">
+              <p className="text-muted-foreground mb-4">You haven't placed any orders yet.</p>
+              <Button className="rounded-full" asChild>
                 <Link to="/shop">Start shopping</Link>
               </Button>
             </CardContent>

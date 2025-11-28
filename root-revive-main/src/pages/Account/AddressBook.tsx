@@ -252,16 +252,16 @@ const AddressBook = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-medium">Address Book</h2>
+        <h2 className="text-xl font-bold">Address Book</h2>
 
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none">
+            <Button className="rounded-full shadow-lg hover:shadow-primary/25 transition-all">
               <PlusCircle className="h-4 w-4 mr-2" />
               Add New Address
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-md rounded-none border-border">
+          <DialogContent className="max-w-md rounded-xl border-border/50 bg-background/95 backdrop-blur-xl">
             <DialogHeader>
               <DialogTitle>Add New Address</DialogTitle>
             </DialogHeader>
@@ -271,46 +271,50 @@ const AddressBook = () => {
       </div>
 
       {addresses.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {addresses.map((address) => (
-            <Card key={address.id} className="border border-border shadow-none rounded-none">
+            <Card key={address.id} className="bg-background/50 backdrop-blur-sm border-border/50 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden">
+              <div className={`absolute top-0 left-0 w-1 h-full ${address.isDefault ? 'bg-primary' : 'bg-transparent'}`} />
               <CardContent className="p-6">
-                <div className="flex justify-between mb-3">
-                  <div className="font-medium">{address.name}</div>
+                <div className="flex justify-between mb-4">
+                  <div className="font-bold text-lg">{address.name}</div>
                   {address.isDefault && (
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-none font-medium uppercase tracking-wider">
+                    <span className="text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-medium uppercase tracking-wider border border-primary/20">
                       Default
                     </span>
                   )}
                 </div>
-                <div className="text-muted-foreground space-y-1 mb-4 text-sm">
+                <div className="text-muted-foreground space-y-1.5 mb-6 text-sm leading-relaxed">
                   <p>{address.address}</p>
                   <p>{address.city}, {address.state} {address.postalCode}</p>
                   <p>{address.country}</p>
-                  <p className="pt-1">{address.phone}</p>
+                  <p className="pt-2 flex items-center gap-2 text-foreground/80">
+                    <span className="text-xs uppercase tracking-wider text-muted-foreground">Phone:</span>
+                    {address.phone}
+                  </p>
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex space-x-2 pt-2 border-t border-border/50">
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
-                    className="rounded-none h-8"
+                    className="h-8 rounded-full hover:bg-primary/10 hover:text-primary"
                     onClick={() => handleEditAddress(address)}
                   >
-                    <Edit className="h-3 w-3 mr-1" /> Edit
+                    <Edit className="h-3.5 w-3.5 mr-1.5" /> Edit
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
-                    className="rounded-none h-8 text-destructive hover:text-destructive"
+                    className="h-8 rounded-full text-destructive/80 hover:text-destructive hover:bg-destructive/10"
                     onClick={() => handleDeleteAddress(address.id)}
                   >
-                    <Trash2 className="h-3 w-3 mr-1" /> Delete
+                    <Trash2 className="h-3.5 w-3.5 mr-1.5" /> Delete
                   </Button>
                   {!address.isDefault && (
                     <Button
-                      variant="link"
+                      variant="ghost"
                       size="sm"
-                      className="text-primary h-8"
+                      className="h-8 ml-auto rounded-full hover:bg-primary/10 hover:text-primary"
                       onClick={() => handleSetDefault(address.id)}
                     >
                       Set as default
@@ -322,11 +326,14 @@ const AddressBook = () => {
           ))}
         </div>
       ) : (
-        <Card className="border border-border shadow-none rounded-none">
-          <CardContent className="p-8 text-center">
-            <p className="text-muted-foreground mb-4">You haven't added any addresses yet.</p>
+        <Card className="bg-background/50 backdrop-blur-sm border-border/50 shadow-sm">
+          <CardContent className="p-12 text-center">
+            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+              <PlusCircle className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <p className="text-muted-foreground mb-6">You haven't added any addresses yet.</p>
             <Button
-              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none"
+              className="rounded-full shadow-lg hover:shadow-primary/25 transition-all"
               onClick={() => setIsAddDialogOpen(true)}
             >
               Add your first address
@@ -336,7 +343,7 @@ const AddressBook = () => {
       )}
 
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-md rounded-none border-border">
+        <DialogContent className="max-w-md rounded-xl border-border/50 bg-background/95 backdrop-blur-xl">
           <DialogHeader>
             <DialogTitle>Edit Address</DialogTitle>
           </DialogHeader>
